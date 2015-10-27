@@ -152,28 +152,49 @@ def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, r, t, max, spillRate, f
 
 
 def getMax():
-    max = float(input("Please enter the maximum amount of pollutant (L): ").strip())
-    while max <= 0:
-        print("Positive values only for max pollutant please")
-        max = float(input("Please enter the maximum amount of pollutant (L): ").strip())
 
-    return max
+    while True:
+        try:
+            max = float(input("Please enter the maximum amount of pollutant (L): ").strip())
+            while max <= 0:
+                print("Positive values only for max pollutant please")
+                max = float(input("Please enter the maximum amount of pollutant (L): ").strip())
+
+            return max
+            break
+
+        except ValueError:
+            print("Numbers only please.")
 
 def getSpillRate():
-    spillRate = float(input("Please enter the rate at which the pollutant is leaking (L/min): ").strip())
-    while spillRate <= 0:
-        print("Positive values only for spill rate please")
-        spillRate = float(input("Please enter the rate at which the pollutant is leaking (L/min): ").strip())
 
-    return spillRate
+
+    while True:
+        try:
+            spillRate = float(input("Please enter the rate at which the pollutant is leaking (L/min): ").strip())
+            while spillRate <= 0:
+                print("Positive values only for spill rate please")
+                spillRate = float(input("Please enter the rate at which the pollutant is leaking (L/min): ").strip())
+            return spillRate
+            break
+
+        except ValueError:
+                print("Numbers only please.")
+
 
 def getFulltime():
-    fulltime = float(input("Please enter the number of minutes to run the sim: ").strip())
-    while fulltime <= 0:
-        print("Positive numbers only for time please")
-        fulltime = float(input("Please enter the number of minutes to run the sim: ").strip())
 
-    return fulltime
+    while True:
+        try:
+            fulltime = float(input("Please enter the number of minutes to run the sim: ").strip())
+            while fulltime <= 0:
+                print("Positive numbers only for time please")
+                fulltime = float(input("Please enter the number of minutes to run the sim: ").strip())
+            return fulltime
+            break
+
+        except ValueError:
+                print("Numbers only please.")
 
 def main():
 
