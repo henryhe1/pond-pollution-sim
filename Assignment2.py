@@ -152,28 +152,28 @@ def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, r, t, max, spillRate, f
 
 
 def getMax():
-    max = input("Please enter the maximum amount of pollutant (L): ").strip()
-    # while not max.isdigit():
-    #     print("Positive values only for max pollutant please")
-    #     max = input("Please enter the maximum amount of pollutant (L): ").strip()
+    max = float(input("Please enter the maximum amount of pollutant (L): ").strip())
+    while max <= 0:
+        print("Positive values only for max pollutant please")
+        max = float(input("Please enter the maximum amount of pollutant (L): ").strip())
 
-    return float(max)
+    return max
 
 def getSpillRate():
-    spillRate = input("Please enter the rate at which the pollutant is leaking (L/min): ").strip()
-    # while not spillRate.isdigit():
-    #     print("Positive values only for spill rate please")
-    #     spillRate = input("Please enter the rate at which the pollutant is leaking (L/min): ").strip()
+    spillRate = float(input("Please enter the rate at which the pollutant is leaking (L/min): ").strip())
+    while spillRate <= 0:
+        print("Positive values only for spill rate please")
+        spillRate = float(input("Please enter the rate at which the pollutant is leaking (L/min): ").strip())
 
-    return float(spillRate)
+    return spillRate
 
 def getFulltime():
-    fulltime = input("Please enter the number of minutes to run the sim: ").strip()
-    # while not fulltime().isdigit():
-    #     print("Positive numbers only for time please")
-    #     fulltime = input("Please enter the number of minutes to run the sim: ").strip()
+    fulltime = float(input("Please enter the number of minutes to run the sim: ").strip())
+    while fulltime <= 0:
+        print("Positive numbers only for time please")
+        fulltime = float(input("Please enter the number of minutes to run the sim: ").strip())
 
-    return float(fulltime)
+    return fulltime
 
 def main():
 
