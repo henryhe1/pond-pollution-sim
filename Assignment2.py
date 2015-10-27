@@ -228,7 +228,7 @@ def main():
 
     canvas.drawText(xHourly, yHourly, "Hourly Report") #need to do this outside of while loop
 
-    while t <= fulltime and pollutant < max: # while stop conditions are satisfied
+    while t <= fulltime and pollutant < max: # while stop conditions are not satisfied
 
         #calling indiv pond functions
         x1 = pond1(x1, x3, spillRate)
