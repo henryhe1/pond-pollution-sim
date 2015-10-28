@@ -1,21 +1,21 @@
 """
-This Python program computes the amount of pollutant in each of 3 ponds due to a chemical spill at each minute of the
-simulation. It takes user input and outputs hourly pollutant level reports, and final pollutant reports and
-percent pollutant per pond via shade in a GUI. Console reports can be used to test data and unrounded values.
+This Python program simulates the amount of pollutant in each of 3 ponds due to a chemical spill at each minute of time.
+It takes user input (validated) and outputs hourly pollutant level reports, final pollutant reports and
+a pollution line graph for each pond. Console reports can be used to test data and unrounded values. graphics and
+plotpoints modules are used.
 
 Author: Henry He
 Student #: 250869172
 Course: CS1026A, Assignment 2
 Instructor: Jordan van Dyk
 Language: Python 3.4
+Date modified: October 28, 2015
 
 """
 
 from graphics import GraphicsWindow
 from plotpoints import createGrid
 from plotpoints import drawDots
-
-
 
 win = GraphicsWindow(1000, 500)
 canvas = win.canvas()
@@ -61,7 +61,7 @@ def pond3(x2, x3, t): #pollution in pond 3 (L)
 
 def stringRound(number):
 
-    n = str(round(number, 2))
+    n = str(round(number, 2)) # round a number to two dec places and cast it to a string.
 
     return n
 
@@ -70,7 +70,7 @@ def hourlyreport(xHourly, yHourly, t, x1, x2, x3, pollutant, n):
     canvas.setColor("black")
 
     canvas.drawText(xHourly, yHourly + n, "time: " + str(t) + "min")
-    n += 10
+    n += 10 #next line canvas
     canvas.drawText(xHourly, yHourly + n, "  x1: " + stringRound(x1) + "L")
     n += 10
     canvas.drawText(xHourly, yHourly + n, "  x2: " + stringRound(x2) + "L")
@@ -111,7 +111,6 @@ def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, t, max, spillRate, full
     canvas.drawText(xFinal, yHourly + 50, "  x3: " + stringRound(x3) + "L")
     canvas.drawText(xFinal, yHourly + 60, "  pollutant: " + stringRound(pollutant) + "L")
 
-
     #Inputs Canvas Display
     canvas.setFill()
     canvas.setOutline("black")
@@ -123,7 +122,6 @@ def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, t, max, spillRate, full
     canvas.drawText(xFinal, yHourly + 150, "  interpond flow rate: ")
     canvas.drawText(xFinal, yHourly + 160, "    " + str(FLOW_RATE) + "L/min")
 
-
 def getMax():
 
     while True:
@@ -132,7 +130,6 @@ def getMax():
             while max <= 0:
                 print("Positive values only for max pollutant please")
                 max = float(input("Please enter the maximum amount of pollutant (L): ").strip())
-
             return max
             break
 
@@ -140,7 +137,6 @@ def getMax():
             print("Numbers only please.")
 
 def getSpillRate():
-
 
     while True:
         try:
@@ -153,7 +149,6 @@ def getSpillRate():
 
         except ValueError:
                 print("Numbers only please.")
-
 
 def getFulltime():
 
@@ -172,32 +167,20 @@ def getFulltime():
 def main():
 
     # User Input
-
     max = getMax()
     spillRate = getSpillRate()
     fulltime = getFulltime()
 
-
     #initial values at t=0
-
     t = 0
     x1 = 0
     x2 = 0
     x3 = 0
     pollutant = 0
-    # print("time: ", t)
-    # print("  x1: ", x1)
-    # print("  x2: ", x2)
-    # print("  x3: ", x3)
-    # print("  pollutant: ", pollutant)
-    # t += 1
-    #
 
     xHourly = 470 # coordinates of hourly report, upon which all other coordinates are based. Change these to shift the whole canvas
     yHourly = 50
-    r = 100 # diameter of pond circles canvas
-    n = 20 #counter for while loop canvas
-
+    n = 20 # counter for while loop canvas hourly report
 
     canvas.drawText(xHourly, yHourly, "Hourly Report") #need to do this outside of while loop
 
@@ -209,10 +192,10 @@ def main():
         x3 = pond3(x2, x3, t)
         pollutant = totalpollutant(pollutant, spillRate, t)
 
+        #Plot functions
         drawDots(canvas, t, 1500, x1, 25, "blue")
         drawDots(canvas, t, 1500, x2, 25, "green")
         drawDots(canvas, t, 1500, x3, 25, "red")
-
 
         if t % 60 == 0: # controls number of minutes per hourly report
 
@@ -225,18 +208,14 @@ def main():
 
             #Hourly Report Canvas
 
-            if n >= 400:
+            if n >= 400: #canvas shift over one column
                 n = 0
                 xHourly += 100
 
             n = hourlyreport(xHourly, yHourly, t, x1, x2, x3, pollutant, n) #update n as it prints down the canvas
 
-
-
         if pollutant >= max:
             spillRate = 0
-
-
 
         t += 1 # calculates values for each minute
 
