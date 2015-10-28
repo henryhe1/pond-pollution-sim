@@ -159,7 +159,7 @@ class GraphicsCanvas :
 
     # Maintain the options used for drawing objects and text.
    self._polyOpts = {"outline" : "black", "width" : 1, "dash" : None, "fill" : ""}
-   self._textOpts = {"text" : "", "justify" : tk.LEFT, "anchor" : tk.NW,
+   self._fontOpts = {"text" : "", "justify" : tk.LEFT, "anchor" : tk.NW,
                      "fill" : "black",
                      "font" : ("helvetica", 10, "normal") }
 
@@ -274,7 +274,7 @@ class GraphicsCanvas :
     else :
       color = red
     self._polyOpts["outline"] = color
-    self._textOpts["fill"] = color
+    self._fontOpts["fill"] = color
 
   ## Sets both the fill and outline colors used when drawing shapes and text
   #  on the canvas. The color can be specified either as a string that names
@@ -292,7 +292,7 @@ class GraphicsCanvas :
        color = red
     self._polyOpts["outline"] = color
     self._polyOpts["fill"] = color
-    self._textOpts["fill"] = color
+    self._fontOpts["fill"] = color
 
   ## Sets the width of lines drawn on the canvas. This includes the line and
   #  vector shapes and the outlines of polygons.
@@ -342,7 +342,7 @@ class GraphicsCanvas :
     else :
        size = origSize
 
-    self._textOpts["font"] = (family, size, style)
+    self._fontOpts["font"] = (family, size, style)
 
   ## Sets the position that text is drawn in relation to a bounding box.
   #  The (x, y) coordinate provided with drawText() is anchored to a spot on
@@ -355,7 +355,7 @@ class GraphicsCanvas :
   def setTextAnchor(self, position) :
     if position not in ('n', 's', 'e', 'w', 'nw', 'ne', 'sw', 'se', 'center') :
       raise GraphicsParamError( "Invalid anchor position." )
-    self._textOpts["anchor"] = position
+    self._fontOpts["anchor"] = position
 
   ## Sets the justification used to draw new multiline text on the canvas..
   #  @param style A string specifying the justification. It can be one of:
@@ -506,8 +506,8 @@ class GraphicsCanvas :
   #
   def drawText(self, x, y, text) :
     self._checkValid()
-    self._textOpts["text"] = text
-    obj = self._tkcanvas.create_text( x, y, self._textOpts )
+    self._fontOpts["text"] = text
+    obj = self._tkcanvas.create_text( x, y, self._fontOpts )
     self._tkcanvas.update_idletasks()
     return obj
 

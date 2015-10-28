@@ -82,63 +82,14 @@ def hourlyreport(xHourly, yHourly, t, x1, x2, x3, pollutant, n):
 
     return n
 
-def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, r, t, max, spillRate, fulltime):
+def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, t, max, spillRate, fulltime):
 
+    canvas.setColor("Black")
+    canvas.setTextFont("helvetica", 30, "normal")
 
-    #Percentage calculations for each pond
-
-    perA = x1 / pollutant * 100
-    perB = x2 / pollutant * 100
-    perC = x3 / pollutant * 100
-
-
-    #Pondinating shade of pond with percentage
-    a = int(255 - ((x1 / pollutant) * 255))
-    b = int(255 - ((x2 / pollutant) * 255))
-    c = int(255 - ((x3 / pollutant) * 255))
-
-    #Pond Headers Canvas
-
-    xPond = xHourly - 80
-    yPond = yHourly - 300
-
-
-    canvas.drawText(xPond, yPond - 70, "POND POLLUTANT SIMULATOR 2000")
-    canvas.drawText(xPond, yPond - 50, "a visual of how much pollutant spilled flows to each pond")
-    canvas.drawText(xPond, yPond - 40, "and the effect of human disturbance on an ecosystem over time")
-
-
-
-
-    # canvas.drawText(xPond, yPond, "Pond 1 (x1): " + stringRound(x1) + "L")
-    # canvas.drawText(xPond, yPond + 10, stringRound(perA) + "%")
-    #
-    # canvas.drawText(xPond + 150, yPond + 230, "Pond 2 (x2): " + stringRound(x2) + "L")
-    # canvas.drawText(xPond + 150, yPond + 240, stringRound(perB) + "%")
-    #
-    # canvas.drawText(xPond + 300, yPond, "Pond 3 (x3): " + stringRound(x3) + "L")
-    # canvas.drawText(xPond + 300, yPond + 10, stringRound(perC) + "%")
-    #
-    # #PondCirlces and Arrows Canvas
-    #
-    # canvas.setColor(a, a, a)
-    # canvas.drawOval(xPond, yPond + 20, r, r)
-    # canvas.drawArrow(xPond + r, yPond + 20 + (r/2), xPond + 150, yPond + 120 + (r/2))
-    #
-    # canvas.setColor(b, b, b)
-    # canvas.drawOval(xPond + 150, yPond + 120, r, r)
-    # canvas.drawArrow(xPond + 150 + r, yPond + 120 + (r/2), xPond + 300, yPond + 20 + (r/2))
-    #
-    # canvas.setColor(c, c, c)
-    # canvas.drawOval(xPond + 300, yPond + 20, r, r)
-    # canvas.drawArrow(xPond + 300, yPond + 20 + (r/2), xPond + r, yPond + 20 + (r/2))
-    #
-    # canvas.setColor("yellow")
-    # canvas.drawPolygon(xPond + 10, yPond + 60, xPond + 20, yPond + 50, xPond + 30, yPond + 60, xPond + 20, yPond + 70)
-    # canvas.setColor("black")
-    # canvas.drawArrow(xPond - 20, yPond + 60, xPond + 20, yPond + 60)
-
-    # canvas.setTextFont("helvetica", 30, "normal")
+    canvas.drawText(xHourly-310, yHourly - 40, "POND POLLUTANT SIMULATOR 2000")
+    canvas.drawText(xHourly-330, yHourly - 30, "a visual of how pollutant in each pond over time")
+    canvas.drawText(xHourly-315, yHourly - 20, "blue=pond1, green=pond2, red=pond3")
 
     #Final Results Console Display
 
@@ -291,7 +242,7 @@ def main():
 
     t -= 1 # undo final result t value
 
-    finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, r, t, max, spillRate, fulltime) # canvas function
+    finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, t, max, spillRate, fulltime) # canvas function
 
 main()
 
