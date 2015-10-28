@@ -12,9 +12,14 @@ Language: Python 3.4
 """
 
 from graphics import GraphicsWindow
+from plotpoints import createGrid
+from plotpoints import drawDots
 
-win = GraphicsWindow(500, 1000)
+
+
+win = GraphicsWindow(1000, 500)
 canvas = win.canvas()
+createGrid(canvas, 1400, 1400)
 
 
 #Test Data for Reference
@@ -26,21 +31,33 @@ canvas = win.canvas()
 FLOW_RATE = 0.005 #liters per minute, Global Constant
 
 
-def totalpollutant(t, spillRate): #total totalpollutant spilled into Pond 1
-    pollutant = spillRate * t
-    return pollutant
+def totalpollutant(pollutant, spillRate, t): #total totalpollutant spilled into Pond 1
+    if t == 0:
+        return 0
+    else:
+        pollutant += spillRate
+        return pollutant
 
-def pond1(x1, x3, spillRate): #pollution in pond 1 (L)
-    x1 = x1 + spillRate + x3 * FLOW_RATE - x1 * FLOW_RATE
-    return x1
+def pond1(x1, x3, spillRate, t): #pollution in pond 1 (L)
+    if t == 0:
+        return 0
+    else:
+        x1 = x1 + FLOW_RATE * x3 - FLOW_RATE * x1 + spillRate # x1t = x1t-1 + Inflow3t-1 – Outflow2t-1 + LeakRatet
+        return x1
 
-def pond2(x1, x2): # pollution in pond 2 (L)
-    x2 = x2 + x1 * FLOW_RATE - x2 * FLOW_RATE
-    return x2
+def pond2(x1, x2, t): # pollution in pond 2 (L)
+    if t == 0 or t == 1:
+        return 0
+    else:
+        x2 = x2 + FLOW_RATE * x1 - FLOW_RATE * x2
+        return x2
 
-def pond3(x2, x3): #pollution in pond 3 (L)
-    x3 = x3 + x2 * FLOW_RATE - x3 * FLOW_RATE
-    return x3
+def pond3(x2, x3, t): #pollution in pond 3 (L)
+    if t == 0 or t == 1 or t == 2:
+        return 0
+    else:
+        x3 = x3 + FLOW_RATE * x2 - FLOW_RATE * x3
+        return x3
 
 def stringRound(number):
 
@@ -49,6 +66,8 @@ def stringRound(number):
     return n
 
 def hourlyreport(xHourly, yHourly, t, x1, x2, x3, pollutant, n):
+
+    canvas.setColor("black")
 
     canvas.drawText(xHourly, yHourly + n, "time: " + str(t) + "min")
     n += 10
@@ -88,33 +107,36 @@ def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, r, t, max, spillRate, f
     canvas.drawText(xPond, yPond - 50, "a visual of how much pollutant spilled flows to each pond")
     canvas.drawText(xPond, yPond - 40, "and the effect of human disturbance on an ecosystem over time")
 
-    canvas.drawText(xPond, yPond, "Pond 1 (x1): " + stringRound(x1) + "L")
-    canvas.drawText(xPond, yPond + 10, stringRound(perA) + "%")
 
-    canvas.drawText(xPond + 150, yPond + 230, "Pond 2 (x2): " + stringRound(x2) + "L")
-    canvas.drawText(xPond + 150, yPond + 240, stringRound(perB) + "%")
 
-    canvas.drawText(xPond + 300, yPond, "Pond 3 (x3): " + stringRound(x3) + "L")
-    canvas.drawText(xPond + 300, yPond + 10, stringRound(perC) + "%")
 
-    #PondCirlces and Arrows Canvas
-
-    canvas.setColor(a, a, a)
-    canvas.drawOval(xPond, yPond + 20, r, r)
-    canvas.drawArrow(xPond + r, yPond + 20 + (r/2), xPond + 150, yPond + 120 + (r/2))
-
-    canvas.setColor(b, b, b)
-    canvas.drawOval(xPond + 150, yPond + 120, r, r)
-    canvas.drawArrow(xPond + 150 + r, yPond + 120 + (r/2), xPond + 300, yPond + 20 + (r/2))
-
-    canvas.setColor(c, c, c)
-    canvas.drawOval(xPond + 300, yPond + 20, r, r)
-    canvas.drawArrow(xPond + 300, yPond + 20 + (r/2), xPond + r, yPond + 20 + (r/2))
-
-    canvas.setColor("yellow")
-    canvas.drawPolygon(xPond + 10, yPond + 60, xPond + 20, yPond + 50, xPond + 30, yPond + 60, xPond + 20, yPond + 70)
-    canvas.setColor("black")
-    canvas.drawArrow(xPond - 20, yPond + 60, xPond + 20, yPond + 60)
+    # canvas.drawText(xPond, yPond, "Pond 1 (x1): " + stringRound(x1) + "L")
+    # canvas.drawText(xPond, yPond + 10, stringRound(perA) + "%")
+    #
+    # canvas.drawText(xPond + 150, yPond + 230, "Pond 2 (x2): " + stringRound(x2) + "L")
+    # canvas.drawText(xPond + 150, yPond + 240, stringRound(perB) + "%")
+    #
+    # canvas.drawText(xPond + 300, yPond, "Pond 3 (x3): " + stringRound(x3) + "L")
+    # canvas.drawText(xPond + 300, yPond + 10, stringRound(perC) + "%")
+    #
+    # #PondCirlces and Arrows Canvas
+    #
+    # canvas.setColor(a, a, a)
+    # canvas.drawOval(xPond, yPond + 20, r, r)
+    # canvas.drawArrow(xPond + r, yPond + 20 + (r/2), xPond + 150, yPond + 120 + (r/2))
+    #
+    # canvas.setColor(b, b, b)
+    # canvas.drawOval(xPond + 150, yPond + 120, r, r)
+    # canvas.drawArrow(xPond + 150 + r, yPond + 120 + (r/2), xPond + 300, yPond + 20 + (r/2))
+    #
+    # canvas.setColor(c, c, c)
+    # canvas.drawOval(xPond + 300, yPond + 20, r, r)
+    # canvas.drawArrow(xPond + 300, yPond + 20 + (r/2), xPond + r, yPond + 20 + (r/2))
+    #
+    # canvas.setColor("yellow")
+    # canvas.drawPolygon(xPond + 10, yPond + 60, xPond + 20, yPond + 50, xPond + 30, yPond + 60, xPond + 20, yPond + 70)
+    # canvas.setColor("black")
+    # canvas.drawArrow(xPond - 20, yPond + 60, xPond + 20, yPond + 60)
 
     # canvas.setTextFont("helvetica", 30, "normal")
 
@@ -129,7 +151,7 @@ def finalcanvas(xHourly, yHourly, x1, x2, x3, pollutant, r, t, max, spillRate, f
 
     #Final Results Canvas Display
 
-    xFinal = xHourly + 150
+    xFinal = xHourly + 100
 
     canvas.drawText(xFinal, yHourly, "Final Report")
     canvas.drawText(xFinal, yHourly + 20, "time: " + str(t) + "min")
@@ -212,29 +234,34 @@ def main():
     x2 = 0
     x3 = 0
     pollutant = 0
-    print("time: ", t)
-    print("  x1: ", x1)
-    print("  x2: ", x2)
-    print("  x3: ", x3)
-    print("  pollutant: ", pollutant)
-    t += 1
+    # print("time: ", t)
+    # print("  x1: ", x1)
+    # print("  x2: ", x2)
+    # print("  x3: ", x3)
+    # print("  pollutant: ", pollutant)
+    # t += 1
+    #
 
-
-    xHourly = 130 # coordinates of hourly report, upon which all other coordinates are based. Change these to shift the whole canvas
-    yHourly = 400
+    xHourly = 470 # coordinates of hourly report, upon which all other coordinates are based. Change these to shift the whole canvas
+    yHourly = 50
     r = 100 # diameter of pond circles canvas
     n = 20 #counter for while loop canvas
 
 
     canvas.drawText(xHourly, yHourly, "Hourly Report") #need to do this outside of while loop
 
-    while t <= fulltime and pollutant < max: # while stop conditions are not satisfied
+    while t <= fulltime: # while stop conditions are not satisfied
 
         #calling indiv pond functions
-        x1 = pond1(x1, x3, spillRate)
-        x2 = pond2(x1, x2)
-        x3 = pond3(x2, x3)
-        pollutant = totalpollutant(t, spillRate)
+        x1 = pond1(x1, x3, spillRate, t)
+        x2 = pond2(x1, x2, t)
+        x3 = pond3(x2, x3, t)
+        pollutant = totalpollutant(pollutant, spillRate, t)
+
+        drawDots(canvas, t, 1500, x1, 25, "blue")
+        drawDots(canvas, t, 1500, x2, 25, "green")
+        drawDots(canvas, t, 1500, x3, 25, "red")
+
 
         if t % 60 == 0: # controls number of minutes per hourly report
 
@@ -247,7 +274,18 @@ def main():
 
             #Hourly Report Canvas
 
+            if n >= 400:
+                n = 0
+                xHourly += 100
+
             n = hourlyreport(xHourly, yHourly, t, x1, x2, x3, pollutant, n) #update n as it prints down the canvas
+
+
+
+        if pollutant >= max:
+            spillRate = 0
+
+
 
         t += 1 # calculates values for each minute
 
